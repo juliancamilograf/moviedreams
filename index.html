@@ -12,17 +12,31 @@
         height: 100%;
         width: 100%;
         overflow: hidden;
+        background: #000;
+      }
+      #startButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 1em 2em;
+        font-size: 1.2em;
+        background-color: white;
+        color: black;
+        border: none;
+        border-radius: 10px;
+        z-index: 10;
       }
       a-scene {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
+        display: none;
       }
     </style>
   </head>
   <body>
+
+    <!-- Botón de inicio obligatorio para iOS -->
+    <button id="startButton">Iniciar experiencia</button>
+
     <a-scene
       mindar-image="imageTargetSrc: target.mind; autoStart: true"
       vr-mode-ui="enabled: false"
@@ -30,7 +44,7 @@
       embedded
     >
       <a-assets>
-        <!-- Videos locales en GitHub Pages -->
+        <!-- Videos en local -->
         <video id="video1" src="01.mp4" loop muted playsinline preload="auto"></video>
         <video id="video2" src="02.mp4" loop muted playsinline preload="auto"></video>
         <video id="video3" src="03.mp4" loop muted playsinline preload="auto"></video>
@@ -46,23 +60,36 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <!-- Video Targets -->
-      <a-entity mindar-image-target="targetIndex: 0"><a-video src="#video1" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 1"><a-video src="#video2" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 2"><a-video src="#video3" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 3"><a-video src="#video4" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 4"><a-video src="#video5" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 5"><a-video src="#video6" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 6"><a-video src="#video7" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 7"><a-video src="#video8" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 8"><a-video src="#video9" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 9"><a-video src="#video10" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 0"><a-video src="#video1" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 1"><a-video src="#video2" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 2"><a-video src="#video3" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 3"><a-video src="#video4" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 4"><a-video src="#video5" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 5"><a-video src="#video6" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 6"><a-video src="#video7" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 7"><a-video src="#video8" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 8"><a-video src="#video9" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 9"><a-video src="#video10" width="1.78" height="1" position="0 0 0" playsinline></a-video></a-entity>
     </a-scene>
 
     <script>
-      // Control de reproducción por target
+      const startButton = document.getElementById("startButton");
+      const scene = document.querySelector("a-scene");
       const targets = document.querySelectorAll("[mindar-image-target]");
       const videos = document.querySelectorAll("video");
 
+      // Botón necesario para iOS (permite activar cámara y autoplay)
+      startButton.addEventListener("click", () => {
+        scene.style.display = "block";
+        startButton.style.display = "none";
+
+        // Autoplay hack para iOS: activar videos vacíos
+        videos.forEach(video => {
+          video.play().then(() => video.pause());
+        });
+      });
+
+      // Control por marcador
       targets.forEach((target, index) => {
         target.addEventListener("targetFound", () => {
           videos[index].play().catch(e => console.error("Error al reproducir:", e));
