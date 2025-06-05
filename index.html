@@ -6,8 +6,7 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
         height: 100%;
@@ -25,222 +24,52 @@
   </head>
   <body>
     <a-scene
-      mindar-image="imageTargetSrc:https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/targetsdreams%20corregidos.mind?v=1747958942306; autoStart: true"
+      mindar-image="imageTargetSrc: target.mind; autoStart: true"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: true"
       embedded
     >
       <a-assets>
-        <!-- Videos muteados -->
-        <video
-          id="video1"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/01.mp4?v=1747957069669"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video2"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/02.mp4?v=1747957070081"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video3"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/03.mp4?v=1747957070558"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video4"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/04.mp4?v=1747957071015"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video5"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/05.mp4?v=1747957071578"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video6"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/06.mp4?v=1747957072003"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video7"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/07.mp4?v=1747957072421"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video8"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/08.mp4?v=1747957072831"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video9"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/09.mp4?v=1747957073235"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
-        <video
-          id="video10"
-          src="https://cdn.glitch.global/a76d8e82-628b-429f-b8d0-777def53d286/10.mp4?v=1747957073710"
-          loop
-          muted
-          playsinline
-          preload="auto"
-          crossorigin="anonymous"
-        ></video>
+        <!-- Videos locales en GitHub Pages -->
+        <video id="video1" src="01.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video2" src="02.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video3" src="03.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video4" src="04.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video5" src="05.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video6" src="06.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video7" src="07.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video8" src="08.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video9" src="09.mp4" loop muted playsinline preload="auto"></video>
+        <video id="video10" src="10.mp4" loop muted playsinline preload="auto"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Video 1 -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-video
-          src="#video1"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 2 -->
-      <a-entity mindar-image-target="targetIndex: 1">
-        <a-video
-          src="#video2"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 3 -->
-      <a-entity mindar-image-target="targetIndex: 2">
-        <a-video
-          src="#video3"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 4 -->
-      <a-entity mindar-image-target="targetIndex: 3">
-        <a-video
-          src="#video4"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 5 -->
-      <a-entity mindar-image-target="targetIndex: 4">
-        <a-video
-          src="#video5"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 6 -->
-      <a-entity mindar-image-target="targetIndex: 5">
-        <a-video
-          src="#video6"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 7 -->
-      <a-entity mindar-image-target="targetIndex: 6">
-        <a-video
-          src="#video7"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 8 -->
-      <a-entity mindar-image-target="targetIndex: 7">
-        <a-video
-          src="#video8"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 9 -->
-      <a-entity mindar-image-target="targetIndex: 8">
-        <a-video
-          src="#video9"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
-
-      <!-- Video 10 -->
-      <a-entity mindar-image-target="targetIndex: 9">
-        <a-video
-          src="#video10"
-          width="1.78"
-          height="1"
-          position="0 0 0"
-        ></a-video>
-      </a-entity>
+      <!-- Video Targets -->
+      <a-entity mindar-image-target="targetIndex: 0"><a-video src="#video1" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 1"><a-video src="#video2" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 2"><a-video src="#video3" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 3"><a-video src="#video4" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 4"><a-video src="#video5" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 5"><a-video src="#video6" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 6"><a-video src="#video7" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 7"><a-video src="#video8" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 8"><a-video src="#video9" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+      <a-entity mindar-image-target="targetIndex: 9"><a-video src="#video10" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
     </a-scene>
 
     <script>
-      // Controlar la reproducción del video según el marcador detectado
+      // Control de reproducción por target
       const targets = document.querySelectorAll("[mindar-image-target]");
       const videos = document.querySelectorAll("video");
 
       targets.forEach((target, index) => {
         target.addEventListener("targetFound", () => {
-          videos[index]
-            .play()
-            .catch((e) => console.error("Error al reproducir:", e));
+          videos[index].play().catch(e => console.error("Error al reproducir:", e));
         });
         target.addEventListener("targetLost", () => {
           videos[index].pause();
-          videos[index].currentTime = 0; // reiniciar para que no quede en medio
+          videos[index].currentTime = 0;
         });
       });
     </script>
