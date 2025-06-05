@@ -12,6 +12,21 @@
         height: 100%;
         width: 100%;
         overflow: hidden;
+        background: #000;
+      }
+      #startButton {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 1em 2em;
+        font-size: 1.2em;
+        background: white;
+        color: black;
+        border: none;
+        border-radius: 10px;
+        z-index: 10;
       }
       a-scene {
         position: fixed;
@@ -19,18 +34,22 @@
         left: 0;
         height: 100%;
         width: 100%;
+        display: none;
       }
     </style>
   </head>
   <body>
+
+    <!-- Botón que se muestra solo en iOS -->
+    <button id="startButton">Iniciar experiencia</button>
+
     <a-scene
       mindar-image="imageTargetSrc: target.mind; autoStart: true"
+      embedded
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: true"
-      embedded
     >
       <a-assets>
-        <!-- Videos locales en GitHub Pages -->
         <video id="video1" src="01.mp4" loop muted playsinline preload="auto"></video>
         <video id="video2" src="02.mp4" loop muted playsinline preload="auto"></video>
         <video id="video3" src="03.mp4" loop muted playsinline preload="auto"></video>
@@ -45,7 +64,6 @@
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Video Targets -->
       <a-entity mindar-image-target="targetIndex: 0"><a-video src="#video1" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
       <a-entity mindar-image-target="targetIndex: 1"><a-video src="#video2" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
       <a-entity mindar-image-target="targetIndex: 2"><a-video src="#video3" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
@@ -59,13 +77,28 @@
     </a-scene>
 
     <script>
-      // Control de reproducción por target
-      const targets = document.querySelectorAll("[mindar-image-target]");
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const scene = document.querySelector("a-scene");
+      const startBtn = document.getElementById("startButton");
       const videos = document.querySelectorAll("video");
+      const targets = document.querySelectorAll("[mindar-image-target]");
 
+      if (isIOS) {
+        startBtn.style.display = "block";
+        startBtn.addEventListener("click", () => {
+          // Desbloquea autoplay para iOS
+          videos.forEach(v => v.play().then(() => v.pause()).catch(() => {}));
+          scene.style.display = "block";
+          startBtn.style.display = "none";
+        });
+      } else {
+        scene.style.display = "block";
+      }
+
+      // Controlar reproducción de los videos según el marcador
       targets.forEach((target, index) => {
         target.addEventListener("targetFound", () => {
-          videos[index].play().catch(e => console.error("Error al reproducir:", e));
+          videos[index].play().catch(e => console.warn("Error al reproducir:", e));
         });
         target.addEventListener("targetLost", () => {
           videos[index].pause();
@@ -73,5 +106,6 @@
         });
       });
     </script>
+
   </body>
 </html>
