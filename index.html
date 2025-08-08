@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>dreams stills</title>
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1.5.0/dist/aframe-master.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.min.js"></script>
   <style>
     html, body {
       margin: 0;
@@ -48,21 +48,43 @@
       padding: 10px 20px;
       border-radius: 5px;
       z-index: 100;
+      text-align: center;
+      max-width: 80%;
+    }
+    .debug-camera {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 200px;
+      height: 200px;
+      z-index: 1000;
+      border: 2px solid red;
+      display: none; /* Oculto por defecto */
+    }
+    .debug-camera video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   </style>
 </head>
 <body>
 
   <!-- Botón que se muestra solo en iOS -->
-  <button id="startButton">Iniciar experiencia</button>
+  <button id="startButton">Iniciar experiencia AR</button>
   <div id="permissionMessage" class="permission-message">
-    Por favor permite el acceso a la cámara para usar esta experiencia AR
+    Por favor permite el acceso a la cámara para usar esta experiencia AR.<br>
+    Actualiza la página después de conceder los permisos.
   </div>
+  
+  <!-- Vista de depuración de la cámara -->
+  <div id="debugCamera" class="debug-camera"></div>
 
   <a-scene
-    mindar-image="imageTargetSrc: target.mind; autoStart: true"
-    embedded
+    mindar-image="imageTargetSrc: target.mind; autoStart: false"
     vr-mode-ui="enabled: false"
+    renderer="useLegacyLights: false; antialias: true"
+    loading-screen="enabled: false"
     device-orientation-permission-ui="enabled: true"
   >
     <a-assets>
@@ -98,61 +120,104 @@
   </a-scene>
 
   <script>
+    // Configuración inicial
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     const scene = document.querySelector("a-scene");
     const startBtn = document.getElementById("startButton");
     const permissionMessage = document.getElementById("permissionMessage");
+    const debugCamera = document.getElementById("debugCamera");
     const videos = document.querySelectorAll("video");
     const targets = document.querySelectorAll("[mindar-image-target]");
+    
+    // Mostrar información de depuración
+    console.log("Dispositivo:", navigator.userAgent);
+    console.log("Soporte WebGL:", AFRAME.utils.device.checkWebGLSupport());
+    console.log("MindAR cargado:", !!AFRAME.systems.mindarImage);
 
-    // Verifica permisos de cámara
-    function checkCameraPermission() {
+    // 1. Función para crear vista de depuración de la cámara
+    function createDebugCameraView() {
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
-          console.log("Permiso de cámara concedido");
-          stream.getTracks().forEach(track => track.stop());
-          permissionMessage.style.display = "none";
-          
-          if (!isIOS) {
-            scene.style.display = "block";
-            // Precarga los videos para dispositivos no iOS
-            videos.forEach(v => {
-              v.load();
-              v.play().then(() => v.pause()).catch(() => {});
-            });
-          }
+          const video = document.createElement('video');
+          video.srcObject = stream;
+          video.autoplay = true;
+          debugCamera.appendChild(video);
+          debugCamera.style.display = 'block';
         })
         .catch(err => {
-          console.error("Error al acceder a la cámara:", err);
-          permissionMessage.style.display = "block";
+          console.error("Error al crear vista de depuración:", err);
         });
     }
 
-    // Inicialización
-    document.addEventListener('DOMContentLoaded', () => {
-      checkCameraPermission();
-      
-      if (isIOS) {
-        startBtn.style.display = "block";
-        startBtn.addEventListener("click", () => {
-          // Desbloquea autoplay para iOS
-          videos.forEach(v => v.play().then(() => v.pause()).catch(() => {}));
-          
-          // Inicia la escena AR
-          const sceneEl = document.querySelector('a-scene');
-          if (sceneEl.hasLoaded) {
-            sceneEl.emit('enter-vr');
-          }
-          
-          scene.style.display = "block";
-          startBtn.style.display = "none";
+    // 2. Función para iniciar AR
+    async function startAR() {
+      try {
+        // Precarga videos
+        await Promise.all(Array.from(videos).map(video => {
+          return new Promise((resolve) => {
+            video.load();
+            video.play().then(() => {
+              video.pause();
+              resolve();
+            }).catch(resolve);
+          });
         });
-      }
 
-      // Controlar reproducción de los videos según el marcador
+        // Inicia MindAR
+        const arSystem = scene.systems["mindar-image-system"];
+        await arSystem.start();
+        
+        console.log("MindAR iniciado correctamente");
+        scene.style.display = "block";
+        startBtn.style.display = "none";
+        
+        // Opcional: ocultar vista de depuración después de 5 segundos
+        setTimeout(() => {
+          debugCamera.style.display = 'none';
+        }, 5000);
+        
+      } catch (err) {
+        console.error("Error al iniciar AR:", err);
+        alert("Error al iniciar la experiencia AR. Por favor recarga la página.");
+      }
+    }
+
+    // 3. Verificación de permisos mejorada
+    async function checkCameraPermission() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        console.log("Cámara accesible");
+        stream.getTracks().forEach(track => track.stop());
+        permissionMessage.style.display = "none";
+        return true;
+      } catch (err) {
+        console.error("Error cámara:", err);
+        permissionMessage.style.display = "block";
+        return false;
+      }
+    }
+
+    // 4. Inicialización completa
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Crear vista de depuración (opcional, para diagnóstico)
+      createDebugCameraView();
+      
+      // Espera a que A-Frame esté listo
+      scene.addEventListener('loaded', async () => {
+        const hasPermission = await checkCameraPermission();
+        
+        if (isIOS) {
+          startBtn.style.display = hasPermission ? "block" : "none";
+          startBtn.addEventListener("click", startAR);
+        } else if (hasPermission) {
+          startAR();
+        }
+      });
+
+      // Control de videos
       targets.forEach((target, index) => {
         target.addEventListener("targetFound", () => {
-          videos[index].play().catch(e => console.warn("Error al reproducir:", e));
+          videos[index].play().catch(e => console.warn("Error al reproducir video:", e));
         });
         target.addEventListener("targetLost", () => {
           videos[index].pause();
@@ -161,14 +226,11 @@
       });
     });
 
-    // Precarga cuando la escena esté lista
-    scene.addEventListener('loaded', function() {
-      if (!isIOS) {
-        videos.forEach(v => {
-          v.load();
-          v.play().then(() => v.pause()).catch(() => {});
-        });
-      }
+    // Manejo de errores global
+    window.addEventListener('error', (event) => {
+      console.error("Error global:", event.error);
+      permissionMessage.textContent = "Ocurrió un error. Por favor recarga la página.";
+      permissionMessage.style.display = "block";
     });
   </script>
 </body>
