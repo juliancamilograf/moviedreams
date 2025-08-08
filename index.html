@@ -1,358 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <title>Dreams AR - GitHub Pages + Archive.org</title>
+
+  <!-- A-Frame y MindAR (versiones estables) -->
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.4/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    html,body { height:100%; margin:0; background:#000; }
+    #startButton {
+      position: absolute; top:50%; left:50%;
+      transform: translate(-50%,-50%);
+      z-index: 999; padding: 14px 28px; font-size:18px;
+      background:#fff; color:#000; border-radius:24px; border:0; cursor:pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    }
+    #msg {
+      position: absolute; top:18px; left:50%; transform:translateX(-50%);
+      z-index: 999; color:white; background: rgba(0,0,0,0.6);
+      padding:10px 14px; border-radius:10px; display:none;
+    }
+    a-scene { width:100%; height:100%; display:none; position:fixed; top:0; left:0; }
+    /* ocultar videos nativos de <a-assets> */
+    video { display:none; }
+  </style>
+</head>
 <body>
+  <div id="msg"></div>
+  <button id="startButton">INICIAR EXPERIENCIA</button>
 
+  <!-- Escena MindAR -->
   <a-scene
-
-   mindar-image="imageTargetSrc:https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/targets.mind?v=1749317238677; autoStart: true"
-
-   vr-mode-ui="enabled: false"
-
-   device-orientation-permission-ui="enabled: true"
-
-   embedded
-
+    mindar-image="imageTargetSrc: https://juliancamilograf.github.io/moviedreams/target.mind; autoStart: false; uiLoading: no; uiScanning: no; uiError: no;"
+    vr-mode-ui="enabled: false"
+    loading-screen="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    embedded
   >
-
-   <a-assets>
-
-    <!-- Videos muteados -->
-
-
-    <video
-
-     id="video1"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/1.MP4.mp4?v=1749314026497"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video2"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/2.MP4.mp4?v=1749314039585"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video3"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/3.MP4.mp4?v=1749314068782"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video4"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/4.MP4.mp4?v=1749314082507"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video5"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/5.MP4.mp4?v=1749314116937"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video6"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/6.MP4.mp4?v=1749314168973"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video7"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/7.MP4.mp4?v=1749314181915"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video8"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/8.MP4.mp4?v=1749314195554"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video9"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/9.MP4.mp4?v=1749314304062"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-
-    <video
-
-     id="video10"
-
-     src="https://cdn.glitch.global/306fd0b1-8694-4d4f-aef8-9f2c1f7fb148/10.MP4.mp4?v=1749314319980"
-
-     loop
-
-     muted
-
-     playsinline
-
-     preload="auto"
-
-     crossorigin="anonymous"
-
-    ></video>
-
-   </a-assets>
-
-
-   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-
-   <!-- Video 1 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 0">
-
-    <a-video src="#video1" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 2 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 1">
-
-    <a-video src="#video2" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 3 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 2">
-
-    <a-video src="#video3" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 4 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 3">
-
-    <a-video src="#video4" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 5 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 4">
-
-    <a-video src="#video5" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 6 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 5">
-
-    <a-video src="#video6" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 7 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 6">
-
-    <a-video src="#video7" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 8 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 7">
-
-    <a-video src="#video8" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 9 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 8">
-
-    <a-video src="#video9" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
-
-
-   <!-- Video 10 -->
-
-
-   <a-entity mindar-image-target="targetIndex: 9">
-
-    <a-video src="#video10" width="1" height="1" position="0 0 0"></a-video>
-
-   </a-entity>
+    <a-assets>
+      <!-- Vídeos en Archive.org (usando /download/ rutas) -->
+      <video id="v1" src="https://archive.org/download/dreamsproyecto/01.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v2" src="https://archive.org/download/dreamsproyecto/02.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v3" src="https://archive.org/download/dreamsproyecto/03.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v4" src="https://archive.org/download/dreamsproyecto/04.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v5" src="https://archive.org/download/dreamsproyecto/05.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v6" src="https://archive.org/download/dreamsproyecto/06.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v7" src="https://archive.org/download/dreamsproyecto/07.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v8" src="https://archive.org/download/dreamsproyecto/08.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v9" src="https://archive.org/download/dreamsproyecto/09.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+      <video id="v10" src="https://archive.org/download/dreamsproyecto/10.mp4" muted playsinline webkit-playsinline crossorigin="anonymous" preload="auto" loop></video>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <!-- 10 marcadores, targetIndex debe coincidir con tu target.mind -->
+    <a-entity mindar-image-target="targetIndex: 0"><a-video src="#v1" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 1"><a-video src="#v2" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 2"><a-video src="#v3" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 3"><a-video src="#v4" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 4"><a-video src="#v5" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 5"><a-video src="#v6" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 6"><a-video src="#v7" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 7"><a-video src="#v8" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 8"><a-video src="#v9" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 9"><a-video src="#v10" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
 
   </a-scene>
 
-
   <script>
+    const startBtn = document.getElementById('startButton');
+    const msg = document.getElementById('msg');
+    const sceneEl = document.querySelector('a-scene');
+    const videos = Array.from(document.querySelectorAll('video'));
+    const mindarSystemName = 'mindar-image-system';
 
-   // Controlar la reproducción del video según el marcador detectado
+    function showMessage(text, show=true) {
+      msg.textContent = text;
+      msg.style.display = show ? 'block' : 'none';
+    }
 
+    // Intenta precargar videos (play->pause) — pero SOLO tras interacción del usuario
+    async function primeVideos() {
+      for (const v of videos) {
+        try {
+          await v.play();
+          v.pause();
+          v.currentTime = 0;
+        } catch (e) {
+          // autoplay puede fallar; no es crítico
+          // console.warn('Video autoplay blocked', e);
+        }
+      }
+    }
 
-   const targets = document.querySelectorAll("[mindar-image-target]");
+    // pedir permisos de cámara y luego iniciar MindAR
+    async function startExperience() {
+      showMessage('Solicitando acceso a la cámara...', true);
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }});
+        // cerramos el stream inmediatamente (MindAR lo abrirá cuando inicie)
+        stream.getTracks().forEach(t => t.stop());
+      } catch (err) {
+        showMessage('Permiso de cámara denegado. Habilita la cámara y recarga.', true);
+        console.error('getUserMedia error:', err);
+        return;
+      }
 
+      // precargar videos para evitar bloqueo de autoplay
+      await primeVideos();
 
-   const videos = document.querySelectorAll("video");
+      // Intentar iniciar MindAR
+      try {
+        const arSystem = sceneEl.systems[mindarSystemName];
+        if (!arSystem) {
+          showMessage('Error: sistema MindAR no encontrado en la escena.', true);
+          return;
+        }
+        await arSystem.start(); // inicia cámara y tracking
+        // mostrar escena y ocultar el botón
+        sceneEl.style.display = 'block';
+        startBtn.style.display = 'none';
+        showMessage('', false);
+      } catch (err) {
+        console.error('Error al iniciar MindAR:', err);
+        showMessage('Error al iniciar AR. Revisa la consola (F12).', true);
+      }
+    }
 
+    // Reproducir y pausar según se encuentren los targets
+    function setupTargetEvents() {
+      // cada entidad con mindar-image-target emitirá events targetFound/targetLost
+      document.querySelectorAll('[mindar-image-target]').forEach(entity => {
+        entity.addEventListener('targetFound', () => {
+          const aVideo = entity.querySelector('a-video');
+          if (!aVideo) return;
+          const src = aVideo.getAttribute('src'); // "#v1"
+          const vidEl = document.querySelector(src);
+          if (vidEl) {
+            vidEl.play().catch(e => console.warn('play error', e));
+          }
+        });
+        entity.addEventListener('targetLost', () => {
+          const aVideo = entity.querySelector('a-video');
+          if (!aVideo) return;
+          const src = aVideo.getAttribute('src');
+          const vidEl = document.querySelector(src);
+          if (vidEl) {
+            vidEl.pause();
+            vidEl.currentTime = 0; // reiniciar para la próxima vez
+          }
+        });
+      });
+    }
 
-   targets.forEach((target, index) => {
-
-    target.addEventListener("targetFound", () => {
-
-     videos[index]
-
-
-      .play()
-
-
-      .catch((e) => console.error("Error al reproducir:", e));
-
+    // evento principal: clic en start
+    startBtn.addEventListener('click', async () => {
+      startBtn.disabled = true;
+      await startExperience();
+      setupTargetEvents();
+      startBtn.disabled = false;
     });
 
-
-    target.addEventListener("targetLost", () => {
-
-     videos[index].pause();
-
-
-     videos[index].currentTime = 0; // reiniciar para que no quede en medio
-
-    });
-
-   });
-
+    // Mensaje inicial
+    showMessage('Pulsa INICIAR EXPERIENCIA para activar la cámara.');
   </script>
-
- </body>
-
+</body>
 </html>
