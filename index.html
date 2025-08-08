@@ -1,98 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>dreams stills</title>
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        background: #000;
-      }
-      #startButton {
-        display: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 1em 2em;
-        font-size: 1.2em;
-        background: white;
-        color: black;
-        border: none;
-        border-radius: 10px;
-        z-index: 10;
-      }
-      a-scene {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <title>dreams stills</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+    #startButton {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 1em 2em;
+      font-size: 1.2em;
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      z-index: 10;
+      cursor: pointer;
+    }
+    a-scene {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      display: none;
+    }
+    .permission-message {
+      display: none;
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
 
-    <!-- Botón que se muestra solo en iOS -->
-    <button id="startButton">Iniciar experiencia</button>
+  <!-- Botón que se muestra solo en iOS -->
+  <button id="startButton">Iniciar experiencia</button>
+  <div id="permissionMessage" class="permission-message">
+    Por favor permite el acceso a la cámara para usar esta experiencia AR
+  </div>
 
-    <a-scene
-      mindar-image="imageTargetSrc: target.mind; autoStart: true"
-      embedded
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true"
-    >
-      <a-assets>
-        <video id="video1" src="01.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video2" src="02.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video3" src="03.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video4" src="04.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video5" src="05.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video6" src="06.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video7" src="07.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video8" src="08.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video9" src="09.mp4" loop muted playsinline preload="auto"></video>
-        <video id="video10" src="10.mp4" loop muted playsinline preload="auto"></video>
-      </a-assets>
+  <a-scene
+    mindar-image="imageTargetSrc: target.mind; autoStart: true"
+    embedded
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: true"
+  >
+    <a-assets>
+      <video id="video1" src="01.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video2" src="02.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video3" src="03.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video4" src="04.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video5" src="05.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video6" src="06.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video7" src="07.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video8" src="08.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video9" src="09.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video10" src="10.mp4" loop muted playsinline preload="auto"></video>
+    </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-camera 
+      position="0 0 0" 
+      look-controls="enabled: false"
+      wasd-controls="enabled: false"
+      active="true">
+    </a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 0"><a-video src="#video1" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 1"><a-video src="#video2" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 2"><a-video src="#video3" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 3"><a-video src="#video4" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 4"><a-video src="#video5" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 5"><a-video src="#video6" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 6"><a-video src="#video7" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 7"><a-video src="#video8" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 8"><a-video src="#video9" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-      <a-entity mindar-image-target="targetIndex: 9"><a-video src="#video10" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    </a-scene>
+    <a-entity mindar-image-target="targetIndex: 0"><a-video src="#video1" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 1"><a-video src="#video2" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 2"><a-video src="#video3" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 3"><a-video src="#video4" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 4"><a-video src="#video5" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 5"><a-video src="#video6" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 6"><a-video src="#video7" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 7"><a-video src="#video8" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 8"><a-video src="#video9" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 9"><a-video src="#video10" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+  </a-scene>
 
-    <script>
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const scene = document.querySelector("a-scene");
-      const startBtn = document.getElementById("startButton");
-      const videos = document.querySelectorAll("video");
-      const targets = document.querySelectorAll("[mindar-image-target]");
+  <script>
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const scene = document.querySelector("a-scene");
+    const startBtn = document.getElementById("startButton");
+    const permissionMessage = document.getElementById("permissionMessage");
+    const videos = document.querySelectorAll("video");
+    const targets = document.querySelectorAll("[mindar-image-target]");
 
+    // Verifica permisos de cámara
+    function checkCameraPermission() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          console.log("Permiso de cámara concedido");
+          stream.getTracks().forEach(track => track.stop());
+          permissionMessage.style.display = "none";
+          
+          if (!isIOS) {
+            scene.style.display = "block";
+            // Precarga los videos para dispositivos no iOS
+            videos.forEach(v => {
+              v.load();
+              v.play().then(() => v.pause()).catch(() => {});
+            });
+          }
+        })
+        .catch(err => {
+          console.error("Error al acceder a la cámara:", err);
+          permissionMessage.style.display = "block";
+        });
+    }
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', () => {
+      checkCameraPermission();
+      
       if (isIOS) {
         startBtn.style.display = "block";
         startBtn.addEventListener("click", () => {
           // Desbloquea autoplay para iOS
           videos.forEach(v => v.play().then(() => v.pause()).catch(() => {}));
+          
+          // Inicia la escena AR
+          const sceneEl = document.querySelector('a-scene');
+          if (sceneEl.hasLoaded) {
+            sceneEl.emit('enter-vr');
+          }
+          
           scene.style.display = "block";
           startBtn.style.display = "none";
         });
-      } else {
-        scene.style.display = "block";
       }
 
       // Controlar reproducción de los videos según el marcador
@@ -105,7 +159,17 @@
           videos[index].currentTime = 0;
         });
       });
-    </script>
+    });
 
-  </body>
+    // Precarga cuando la escena esté lista
+    scene.addEventListener('loaded', function() {
+      if (!isIOS) {
+        videos.forEach(v => {
+          v.load();
+          v.play().then(() => v.pause()).catch(() => {});
+        });
+      }
+    });
+  </script>
+</body>
 </html>
