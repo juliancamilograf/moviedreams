@@ -1,106 +1,318 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Dreams AR</title>
-
-  <!-- Librerías MindAR y A-Frame -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image.prod.js"></script>
+  
+  <!-- Versiones compatibles verificadas -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/aframe/mindar-image-aframe.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
     body {
       margin: 0;
+      padding: 0;
       overflow: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
     }
-    video {
-      display: none; /* Ocultar videos nativos */
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #start-button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      display: none;
+    }
+    #error-message {
+      color: #ff4444;
+      margin-top: 20px;
+      text-align: center;
+      max-width: 80%;
+      display: none;
+    }
+    a-scene {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+    .arjs-loader {
+      display: none !important;
     }
   </style>
 </head>
 <body>
 
-  <!-- Escena A-Frame con MindAR -->
+  <div id="loading-overlay">
+    <div id="loading-text">Preparando experiencia AR...</div>
+    <button id="start-button">INICIAR EXPERIENCIA</button>
+    <div id="error-message"></div>
+  </div>
+
   <a-scene
-    mindar-image="imageTargetSrc: https://raw.githubusercontent.com/juliancamilograf/moviedreams/main/target.mind; autoStart: true; uiLoading: yes; uiScanning: yes; uiError: yes;"
+    mindar-image="imageTargetSrc: https://raw.githubusercontent.com/juliancamilograf/moviedreams/main/target.mind; autoStart: false; uiLoading: no; uiScanning: no; uiError: no;"
     vr-mode-ui="enabled: false"
+    renderer="colorManagement: true; precision: high; antialias: true;"
+    loading-screen="enabled: false"
     device-orientation-permission-ui="enabled: false"
   >
-
-    <!-- Pre-carga los videos con sus IDs -->
     <a-assets>
-      <video id="vid1" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/01.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid2" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/02.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid3" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/03.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid4" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/04.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid5" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/05.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid6" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/06.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid7" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/07.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid8" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/08.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid9" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/09.mp4" preload="auto" loop crossorigin="anonymous"></video>
-      <video id="vid10" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/10.mp4" preload="auto" loop crossorigin="anonymous"></video>
+      <!-- Videos con atributos para compatibilidad móvil -->
+      <video id="vid1" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/01.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid2" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/02.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid3" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/03.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid4" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/04.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid5" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/05.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid6" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/06.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid7" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/07.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid8" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/08.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid9" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/09.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid10" src="https://ia600909.us.archive.org/20/items/dreamsproyecto/10.mp4" 
+             preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
     </a-assets>
 
-    <!-- Marcadores con videos diferentes para cada uno -->
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled: false"
+      wasd-controls="enabled: false"
+    ></a-camera>
+
+    <!-- Marcadores con videos -->
     <a-entity mindar-image-target="targetIndex: 0">
       <a-video src="#vid1" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 1">
       <a-video src="#vid2" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 2">
       <a-video src="#vid3" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 3">
       <a-video src="#vid4" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 4">
       <a-video src="#vid5" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 5">
       <a-video src="#vid6" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 6">
       <a-video src="#vid7" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 7">
       <a-video src="#vid8" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 8">
       <a-video src="#vid9" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
     <a-entity mindar-image-target="targetIndex: 9">
       <a-video src="#vid10" width="1" height="0.5625" position="0 0 0"></a-video>
     </a-entity>
-
   </a-scene>
 
   <script>
-    // Reproducir video al detectar marcador, pausar y reiniciar al perderlo
-    document.querySelectorAll('a-video').forEach((aVideo) => {
-      const videoEl = document.querySelector(aVideo.getAttribute('src'));
-      const parent = aVideo.parentElement;
+    // Elementos del DOM
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const loadingText = document.getElementById('loading-text');
+    const startButton = document.getElementById('start-button');
+    const errorMessage = document.getElementById('error-message');
+    const scene = document.querySelector('a-scene');
+    
+    // Variables de estado
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-      parent.addEventListener('targetFound', () => {
-        videoEl.play();
-      });
+    // 1. Verificar compatibilidad del navegador
+    function checkCompatibility() {
+      if (!window.AFRAME) {
+        showError("Error: A-Frame no se cargó correctamente");
+        return false;
+      }
 
-      parent.addEventListener('targetLost', () => {
-        videoEl.pause();
-        videoEl.currentTime = 0;
+      if (!AFRAME.systems.mindarImage) {
+        showError("Error: MindAR no se cargó correctamente");
+        return false;
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showError("Tu navegador no soporta acceso a la cámara");
+        return false;
+      }
+
+      return true;
+    }
+
+    // 2. Solicitar permisos de cámara
+    async function requestCameraPermission() {
+      try {
+        loadingText.textContent = "Solicitando acceso a la cámara...";
+        
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'environment',
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          }
+        });
+        
+        // Detener el stream (MindAR creará su propio stream)
+        stream.getTracks().forEach(track => track.stop());
+        
+        return true;
+      } catch (error) {
+        console.error("Error al acceder a la cámara:", error);
+        showError("Por favor permite el acceso a la cámara para usar AR");
+        return false;
+      }
+    }
+
+    // 3. Precargar y preparar videos
+    async function prepareVideos() {
+      try {
+        loadingText.textContent = "Preparando videos...";
+        const videos = document.querySelectorAll('video');
+        
+        await Promise.all(Array.from(videos).map(video => {
+          return new Promise((resolve) => {
+            video.onloadeddata = () => {
+              // Truco para desbloquear autoplay en móviles
+              video.play().then(() => {
+                video.pause();
+                resolve();
+              }).catch(resolve);
+            };
+            video.load();
+          });
+        });
+        
+        return true;
+      } catch (error) {
+        console.error("Error al preparar videos:", error);
+        showError("Error al cargar los videos");
+        return false;
+      }
+    }
+
+    // 4. Iniciar el sistema AR
+    async function startARSystem() {
+      try {
+        loadingText.textContent = "Iniciando realidad aumentada...";
+        
+        const arSystem = scene.systems['mindar-image-system'];
+        await arSystem.start();
+        
+        // Mostrar la escena
+        scene.style.display = 'block';
+        loadingOverlay.style.display = 'none';
+        
+        console.log("Sistema AR iniciado correctamente");
+      } catch (error) {
+        console.error("Error al iniciar AR:", error);
+        showError("Error al iniciar la realidad aumentada");
+      }
+    }
+
+    // 5. Configurar eventos de los targets
+    function setupTargetEvents() {
+      const targets = document.querySelectorAll('[mindar-image-target]');
+      const videos = document.querySelectorAll('video');
+      
+      targets.forEach((target, index) => {
+        target.addEventListener('targetFound', () => {
+          videos[index].play().catch(e => console.warn("Error al reproducir video:", e));
+        });
+        
+        target.addEventListener('targetLost', () => {
+          videos[index].pause();
+          videos[index].currentTime = 0;
+        });
       });
+    }
+
+    // 6. Mostrar mensajes de error
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      startButton.style.display = 'none';
+      loadingText.textContent = "Error";
+    }
+
+    // 7. Configurar interacción del usuario
+    function setupUserInteraction() {
+      if (isIOS || isSafari) {
+        // iOS/Safari requiere interacción del usuario
+        startButton.style.display = 'block';
+        startButton.addEventListener('click', async () => {
+          startButton.style.display = 'none';
+          await startARSystem();
+        });
+      } else {
+        // Otros navegadores pueden iniciar automáticamente
+        startARSystem();
+      }
+    }
+
+    // 8. Inicialización completa
+    async function initializeAR() {
+      try {
+        // Paso 1: Verificar compatibilidad
+        if (!checkCompatibility()) return;
+        
+        // Paso 2: Solicitar permisos de cámara
+        if (!await requestCameraPermission()) return;
+        
+        // Paso 3: Preparar videos
+        if (!await prepareVideos()) return;
+        
+        // Paso 4: Configurar interacción
+        setupUserInteraction();
+        
+        // Paso 5: Configurar eventos de targets
+        setupTargetEvents();
+        
+      } catch (error) {
+        console.error("Error en inicialización:", error);
+        showError("Error crítico al inicializar la aplicación");
+      }
+    }
+
+    // Iniciar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', initializeAR);
+
+    // Manejar errores no capturados
+    window.addEventListener('error', (event) => {
+      console.error("Error global:", event.error);
+      showError("Error inesperado. Por favor recarga la página.");
     });
   </script>
-
 </body>
 </html>
