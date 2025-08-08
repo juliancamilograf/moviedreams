@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>dreams stills</title>
   <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1.5.0/dist/aframe-master.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.min.js"></script>
@@ -15,223 +16,312 @@
       background: #000;
     }
     #startButton {
-      display: none;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      padding: 1em 2em;
-      font-size: 1.2em;
-      background: white;
-      color: black;
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #fff;
+      color: #000;
       border: none;
-      border-radius: 10px;
-      z-index: 10;
+      border-radius: 25px;
+      z-index: 100;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    a-scene {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      display: none;
-    }
-    .permission-message {
+    #permissionMessage {
       display: none;
       position: absolute;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.8);
       color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
+      padding: 15px;
+      border-radius: 10px;
       z-index: 100;
       text-align: center;
       max-width: 80%;
+      font-size: 16px;
     }
-    .debug-camera {
+    a-scene {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 200px;
-      height: 200px;
-      z-index: 1000;
-      border: 2px solid red;
-      display: none; /* Oculto por defecto */
-    }
-    .debug-camera video {
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+    }
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 20px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Botón que se muestra solo en iOS -->
-  <button id="startButton">Iniciar experiencia AR</button>
-  <div id="permissionMessage" class="permission-message">
-    Por favor permite el acceso a la cámara para usar esta experiencia AR.<br>
-    Actualiza la página después de conceder los permisos.
+  <div id="loading" class="loading">
+    Cargando experiencia AR...
   </div>
-  
-  <!-- Vista de depuración de la cámara -->
-  <div id="debugCamera" class="debug-camera"></div>
+
+  <button id="startButton" style="display:none;">INICIAR EXPERIENCIA</button>
+  <div id="permissionMessage"></div>
 
   <a-scene
-    mindar-image="imageTargetSrc: target.mind; autoStart: false"
+    mindar-image="imageTargetSrc: target.mind; autoStart: false; uiLoading: no; uiScanning: no; uiError: no;"
     vr-mode-ui="enabled: false"
-    renderer="useLegacyLights: false; antialias: true"
+    renderer="colorManagement: true; precision: high;"
     loading-screen="enabled: false"
-    device-orientation-permission-ui="enabled: true"
+    device-orientation-permission-ui="enabled: false"
   >
     <a-assets>
-      <video id="video1" src="01.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video2" src="02.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video3" src="03.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video4" src="04.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video5" src="05.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video6" src="06.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video7" src="07.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video8" src="08.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video9" src="09.mp4" loop muted playsinline preload="auto"></video>
-      <video id="video10" src="10.mp4" loop muted playsinline preload="auto"></video>
+      <video id="video1" src="01.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video2" src="02.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video3" src="03.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video4" src="04.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video5" src="05.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video6" src="06.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video7" src="07.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video8" src="08.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video9" src="09.mp4" loop muted playsinline webkit-playsinline></video>
+      <video id="video10" src="10.mp4" loop muted playsinline webkit-playsinline></video>
     </a-assets>
 
     <a-camera 
       position="0 0 0" 
       look-controls="enabled: false"
       wasd-controls="enabled: false"
-      active="true">
+      cursor="rayOrigin: mouse">
     </a-camera>
 
-    <a-entity mindar-image-target="targetIndex: 0"><a-video src="#video1" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 1"><a-video src="#video2" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 2"><a-video src="#video3" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 3"><a-video src="#video4" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 4"><a-video src="#video5" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 5"><a-video src="#video6" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 6"><a-video src="#video7" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 7"><a-video src="#video8" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 8"><a-video src="#video9" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
-    <a-entity mindar-image-target="targetIndex: 9"><a-video src="#video10" width="1.78" height="1" position="0 0 0"></a-video></a-entity>
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-video src="#video1" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 1">
+      <a-video src="#video2" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 2">
+      <a-video src="#video3" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 3">
+      <a-video src="#video4" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 4">
+      <a-video src="#video5" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 5">
+      <a-video src="#video6" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 6">
+      <a-video src="#video7" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 7">
+      <a-video src="#video8" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 8">
+      <a-video src="#video9" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 9">
+      <a-video src="#video10" width="1.78" height="1" position="0 0 0" rotation="0 0 0"></a-video>
+    </a-entity>
   </a-scene>
 
   <script>
-    // Configuración inicial
+    // Elementos del DOM
+    const loadingEl = document.getElementById('loading');
+    const startBtn = document.getElementById('startButton');
+    const permissionMsg = document.getElementById('permissionMessage');
+    const sceneEl = document.querySelector('a-scene');
+    const videos = document.querySelectorAll('video');
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const scene = document.querySelector("a-scene");
-    const startBtn = document.getElementById("startButton");
-    const permissionMessage = document.getElementById("permissionMessage");
-    const debugCamera = document.getElementById("debugCamera");
-    const videos = document.querySelectorAll("video");
-    const targets = document.querySelectorAll("[mindar-image-target]");
-    
-    // Mostrar información de depuración
-    console.log("Dispositivo:", navigator.userAgent);
-    console.log("Soporte WebGL:", AFRAME.utils.device.checkWebGLSupport());
-    console.log("MindAR cargado:", !!AFRAME.systems.mindarImage);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-    // 1. Función para crear vista de depuración de la cámara
-    function createDebugCameraView() {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-          const video = document.createElement('video');
-          video.srcObject = stream;
-          video.autoplay = true;
-          debugCamera.appendChild(video);
-          debugCamera.style.display = 'block';
-        })
-        .catch(err => {
-          console.error("Error al crear vista de depuración:", err);
-        });
-    }
+    // Estado de la aplicación
+    let hasCameraPermission = false;
+    let arSystemReady = false;
 
-    // 2. Función para iniciar AR
-    async function startAR() {
-      try {
-        // Precarga videos
-        await Promise.all(Array.from(videos).map(video => {
-          return new Promise((resolve) => {
-            video.load();
-            video.play().then(() => {
-              video.pause();
-              resolve();
-            }).catch(resolve);
-          });
-        });
-
-        // Inicia MindAR
-        const arSystem = scene.systems["mindar-image-system"];
-        await arSystem.start();
-        
-        console.log("MindAR iniciado correctamente");
-        scene.style.display = "block";
-        startBtn.style.display = "none";
-        
-        // Opcional: ocultar vista de depuración después de 5 segundos
-        setTimeout(() => {
-          debugCamera.style.display = 'none';
-        }, 5000);
-        
-      } catch (err) {
-        console.error("Error al iniciar AR:", err);
-        alert("Error al iniciar la experiencia AR. Por favor recarga la página.");
+    // 1. Verificar compatibilidad
+    function checkCompatibility() {
+      if (!AFRAME.utils.device.checkWebGLSupport()) {
+        showError('Tu dispositivo no soporta WebGL. Prueba con otro navegador o dispositivo.');
+        return false;
       }
+      
+      if (!AFRAME.systems.mindarImage) {
+        showError('Error al cargar la librería AR. Recarga la página.');
+        return false;
+      }
+      
+      return true;
     }
 
-    // 3. Verificación de permisos mejorada
-    async function checkCameraPermission() {
+    // 2. Solicitar permisos de cámara
+    async function requestCameraPermission() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        console.log("Cámara accesible");
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            facingMode: 'environment',
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
+          } 
+        });
+        
+        // Detener el stream inmediatamente (solo necesitamos el permiso)
         stream.getTracks().forEach(track => track.stop());
-        permissionMessage.style.display = "none";
+        
+        hasCameraPermission = true;
+        permissionMsg.style.display = 'none';
         return true;
-      } catch (err) {
-        console.error("Error cámara:", err);
-        permissionMessage.style.display = "block";
+      } catch (error) {
+        console.error('Error al acceder a la cámara:', error);
+        showError('Por favor permite el acceso a la cámara para usar esta experiencia AR.');
         return false;
       }
     }
 
-    // 4. Inicialización completa
-    document.addEventListener('DOMContentLoaded', async () => {
-      // Crear vista de depuración (opcional, para diagnóstico)
-      createDebugCameraView();
-      
-      // Espera a que A-Frame esté listo
-      scene.addEventListener('loaded', async () => {
-        const hasPermission = await checkCameraPermission();
+    // 3. Precargar videos
+    async function preloadVideos() {
+      try {
+        await Promise.all(Array.from(videos).map(video => {
+          return new Promise((resolve) => {
+            video.load();
+            video.setAttribute('playsinline', '');
+            video.setAttribute('webkit-playsinline', '');
+            
+            // Truco para desbloquear autoplay en iOS
+            const playPromise = video.play();
+            
+            if (playPromise !== undefined) {
+              playPromise
+                .then(() => {
+                  video.pause();
+                  resolve();
+                })
+                .catch(() => {
+                  // Ignorar errores de autoplay
+                  resolve();
+                });
+            } else {
+              resolve();
+            }
+          });
+        }));
         
-        if (isIOS) {
-          startBtn.style.display = hasPermission ? "block" : "none";
-          startBtn.addEventListener("click", startAR);
-        } else if (hasPermission) {
-          startAR();
-        }
-      });
+        return true;
+      } catch (error) {
+        console.error('Error al precargar videos:', error);
+        return false;
+      }
+    }
 
-      // Control de videos
-      targets.forEach((target, index) => {
-        target.addEventListener("targetFound", () => {
-          videos[index].play().catch(e => console.warn("Error al reproducir video:", e));
+    // 4. Iniciar experiencia AR
+    async function startARExperience() {
+      try {
+        // Mostrar carga
+        loadingEl.style.display = 'flex';
+        
+        // Iniciar sistema AR
+        const arSystem = sceneEl.systems['mindar-image-system'];
+        await arSystem.start();
+        arSystemReady = true;
+        
+        // Ocultar carga y mostrar escena
+        loadingEl.style.display = 'none';
+        sceneEl.style.display = 'block';
+        
+        console.log('Experiencia AR iniciada correctamente');
+      } catch (error) {
+        console.error('Error al iniciar AR:', error);
+        showError('Error al iniciar la experiencia AR. Recarga la página.');
+      }
+    }
+
+    // 5. Manejar interacción del usuario
+    function setupUserInteraction() {
+      if (isIOS || isSafari) {
+        // Mostrar botón de inicio en iOS/Safari
+        startBtn.style.display = 'block';
+        
+        startBtn.addEventListener('click', async () => {
+          startBtn.style.display = 'none';
+          await startARExperience();
         });
-        target.addEventListener("targetLost", () => {
+      } else {
+        // Iniciar automáticamente en otros navegadores
+        startARExperience();
+      }
+    }
+
+    // 6. Mostrar mensaje de error
+    function showError(message) {
+      permissionMsg.textContent = message;
+      permissionMsg.style.display = 'block';
+      loadingEl.style.display = 'none';
+    }
+
+    // 7. Configurar eventos de los targets
+    function setupTargetEvents() {
+      const targets = document.querySelectorAll('[mindar-image-target]');
+      
+      targets.forEach((target, index) => {
+        target.addEventListener('targetFound', () => {
+          videos[index].play().catch(e => console.warn('Error al reproducir video:', e));
+        });
+        
+        target.addEventListener('targetLost', () => {
           videos[index].pause();
           videos[index].currentTime = 0;
         });
       });
-    });
+    }
 
-    // Manejo de errores global
-    window.addEventListener('error', (event) => {
-      console.error("Error global:", event.error);
-      permissionMessage.textContent = "Ocurrió un error. Por favor recarga la página.";
-      permissionMessage.style.display = "block";
-    });
+    // Inicialización completa
+    async function init() {
+      try {
+        // 1. Verificar compatibilidad
+        if (!checkCompatibility()) return;
+        
+        // 2. Solicitar permisos de cámara
+        hasCameraPermission = await requestCameraPermission();
+        if (!hasCameraPermission) return;
+        
+        // 3. Precargar videos
+        await preloadVideos();
+        
+        // 4. Configurar interacción del usuario
+        setupUserInteraction();
+        
+        // 5. Configurar eventos de los targets
+        setupTargetEvents();
+        
+        // 6. Configurar evento cuando la escena está lista
+        sceneEl.addEventListener('loaded', () => {
+          console.log('Escena AR cargada');
+          
+          // En Android/Chrome podemos iniciar automáticamente
+          if (!isIOS && !isSafari) {
+            startARExperience();
+          }
+        });
+        
+      } catch (error) {
+        console.error('Error en inicialización:', error);
+        showError('Error al cargar la experiencia. Recarga la página.');
+      }
+    }
+
+    // Iniciar la aplicación
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
