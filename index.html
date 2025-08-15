@@ -2,95 +2,58 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>dreams stills</title>
+    <title>Movie Dreams AR</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-      }
-      a-scene {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
+      body { margin: 0; overflow: hidden; }
+      #startBtn {
+        position: absolute;
+        z-index: 999;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #000;
+        color: #fff;
+        padding: 15px 30px;
+        font-size: 18px;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
+    <button id="startBtn">Iniciar AR</button>
+
     <a-scene
-      mindar-image="imageTargetSrc: ./target.mind; autoStart: true"
+      mindar-image="imageTargetSrc: ./target.mind;"
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true"
+      device-orientation-permission-ui="enabled: false"
       embedded
     >
       <a-assets>
-        <!-- Videos desde carpeta local -->
-        <video id="video1" src="./videos/01.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video2" src="./videos/02.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video3" src="./videos/03.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video4" src="./videos/04.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video5" src="./videos/05.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video6" src="./videos/06.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video7" src="./videos/07.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video8" src="./videos/08.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video9" src="./videos/09.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
-        <video id="video10" src="./videos/10.mp4" loop muted playsinline preload="auto" crossorigin="anonymous"></video>
+        <video id="vid01" src="./01.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
+        <video id="vid02" src="./02.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
       </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <!-- Entidades con videos -->
+      <!-- Marcador 1 -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-video src="#video1" width="1.78" height="1" position="0 0 0"></a-video>
+        <a-video src="#vid01" width="1" height="0.56" position="0 0 0"></a-video>
       </a-entity>
+
+      <!-- Marcador 2 -->
       <a-entity mindar-image-target="targetIndex: 1">
-        <a-video src="#video2" width="1.78" height="1" position="0 0 0"></a-video>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 2">
-        <a-video src="#video3" width="1.78" height="1" position="0 0 0"></a-video>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 3">
-        <a-video src="#video4" width="1.78" height="1" position="0 0 0"></a-video>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 4">
-        <a-video src="#video5" width="1.78" height="1" position="0 0 0"></a-video>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 5">
-        <a-video src="#video6" width="1.78" height="1" position="0 0 0"></a-video>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 6">
-        <a-video src="#video7" width="1.78" height="1" position="0 0 0"></a-video>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 7">
-        <a-video src="#video8" width="1.78" height="1" position="0 0 0"></a-video>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 8">
-        <a-video src="#video9" width="1.78" height="1" position="0 0 0"></a-video>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 9">
-        <a-video src="#video10" width="1.78" height="1" position="0 0 0"></a-video>
+        <a-video src="#vid02" width="1" height="0.56" position="0 0 0"></a-video>
       </a-entity>
     </a-scene>
 
     <script>
-      const targets = document.querySelectorAll("[mindar-image-target]");
-      const videos = document.querySelectorAll("video");
-
-      targets.forEach((target, index) => {
-        target.addEventListener("targetFound", () => {
-          videos[index].play().catch((e) => console.error("Error al reproducir:", e));
+      document.getElementById('startBtn').addEventListener('click', () => {
+        const vids = document.querySelectorAll('video');
+        vids.forEach(v => {
+          v.play();
+          v.pause();
         });
-        target.addEventListener("targetLost", () => {
-          videos[index].pause();
-          videos[index].currentTime = 0;
-        });
+        document.getElementById('startBtn').style.display = 'none';
       });
     </script>
   </body>
